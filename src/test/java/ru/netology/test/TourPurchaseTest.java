@@ -1,8 +1,10 @@
 package ru.netology.test;
 
+import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
+
 import lombok.val;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import ru.netology.data.DataGenerator;
 
 
@@ -14,8 +16,19 @@ import static ru.netology.data.DataGenerator.*;
 
 public class TourPurchaseTest {
 
+    @BeforeAll
+    static void setUpAll() {
+        SelenideLogger.addListener("allure", new AllureSelenide());
+    }
+
+
+    @AfterAll
+    static void tearDownAll() {
+        SelenideLogger.removeListener("allure");
+    }
+
     @BeforeEach
-    void setUp() {
+    public void setUp() {
         open("http://localhost:8080");
     }
 
@@ -75,7 +88,7 @@ public class TourPurchaseTest {
 
     // passed
     @Test
-   public void shouldShowErrorIfCardNumberContainsLetters() {
+    public void shouldShowErrorIfCardNumberContainsLetters() {
         val mainPage = new MainPage();
         val cardInfo = new CardInfo(getCardNumberWithLetters(), getValidMonth(), getValidYear(), getCardOwnerName(), getValidCvc());
         val purchasePage = mainPage.purchaseByCard();
@@ -88,7 +101,7 @@ public class TourPurchaseTest {
     public void shouldShowErrorIfCardNumberContainsSymbols() {
         val mainPage = new MainPage();
         val cardInfo = new CardInfo(getCardNumberWithSymbols(), getValidMonth(), getValidYear(), getCardOwnerName(), getValidCvc());
-       val purchasePage = mainPage.purchaseByCard();
+        val purchasePage = mainPage.purchaseByCard();
         purchasePage.fillInForm(cardInfo);
         purchasePage.showCardNumberError();
     }
@@ -222,6 +235,7 @@ public class TourPurchaseTest {
         purchasePage.fillInForm(cardInfo);
         purchasePage.showYearFormatError();
     }
+
     // failed
     @Test
     public void shouldShowErrorIfNameInRus() {
@@ -359,20 +373,6 @@ public class TourPurchaseTest {
         val purchasePage = mainPage.purchaseByCard();
         purchasePage.emptyForm();
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }
 
