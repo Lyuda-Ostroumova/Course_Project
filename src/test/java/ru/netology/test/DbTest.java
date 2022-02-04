@@ -1,5 +1,6 @@
 package ru.netology.test;
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
 
 import io.qameta.allure.selenide.AllureSelenide;
@@ -20,6 +21,8 @@ public class DbTest {
 
     @BeforeAll
     static void setUpAll() {
+
+        Configuration.headless = true;
         SelenideLogger.addListener("allure", new AllureSelenide());
     }
 

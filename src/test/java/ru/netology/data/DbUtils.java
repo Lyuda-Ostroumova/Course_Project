@@ -11,11 +11,6 @@ import java.sql.SQLException;
 
 public class DbUtils {
 
-    @BeforeAll
-    static void setUp() {
-
-    }
-
     static String url = getUrl();
     static String user = "app";
     static String password = "pass";
